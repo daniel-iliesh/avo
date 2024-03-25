@@ -13,46 +13,64 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as authLoginImport } from './routes/(auth)/login'
-import { Route as adminDashboardImport } from './routes/(admin)/dashboard'
-import { Route as adminLayoutImport } from './routes/(admin)/_layout'
+import { Route as HomeImport } from './routes/_home'
+import { Route as AuthImport } from './routes/_auth'
+import { Route as AdminImport } from './routes/_admin'
+import { Route as IndexImport } from './routes/index'
+import { Route as HomeHomeImport } from './routes/_home/home'
+import { Route as AuthRegisterImport } from './routes/_auth/register'
+import { Route as AuthLoginImport } from './routes/_auth/login'
+import { Route as AdminDashboardImport } from './routes/_admin.dashboard'
 
 // Create Virtual Routes
 
-const adminImport = createFileRoute('/(admin)')()
 const AboutLazyImport = createFileRoute('/about')()
-const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
-
-const adminRoute = adminImport.update({
-  path: '/',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const AboutLazyRoute = AboutLazyImport.update({
   path: '/about',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 
-const IndexLazyRoute = IndexLazyImport.update({
+const HomeRoute = HomeImport.update({
+  id: '/_home',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AdminRoute = AdminImport.update({
+  id: '/_admin',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 
-const authLoginRoute = authLoginImport.update({
+const HomeHomeRoute = HomeHomeImport.update({
+  path: '/home',
+  getParentRoute: () => HomeRoute,
+} as any)
+
+const AuthRegisterRoute = AuthRegisterImport.update({
+  path: '/register',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthLoginRoute = AuthLoginImport.update({
   path: '/login',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any)
 
-const adminDashboardRoute = adminDashboardImport.update({
+const AdminDashboardRoute = AdminDashboardImport.update({
   path: '/dashboard',
-  getParentRoute: () => adminRoute,
-} as any)
-
-const adminLayoutRoute = adminLayoutImport.update({
-  id: '/_layout',
-  getParentRoute: () => adminRoute,
+  getParentRoute: () => AdminRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -60,28 +78,40 @@ const adminLayoutRoute = adminLayoutImport.update({
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      preLoaderRoute: typeof IndexLazyImport
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_admin': {
+      preLoaderRoute: typeof AdminImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth': {
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/_home': {
+      preLoaderRoute: typeof HomeImport
       parentRoute: typeof rootRoute
     }
     '/about': {
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
-    '/(admin)': {
-      preLoaderRoute: typeof adminImport
-      parentRoute: typeof rootRoute
+    '/_admin/dashboard': {
+      preLoaderRoute: typeof AdminDashboardImport
+      parentRoute: typeof AdminImport
     }
-    '/(admin)/_layout': {
-      preLoaderRoute: typeof adminLayoutImport
-      parentRoute: typeof adminRoute
+    '/_auth/login': {
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof AuthImport
     }
-    '/(admin)/dashboard': {
-      preLoaderRoute: typeof adminDashboardImport
-      parentRoute: typeof adminImport
+    '/_auth/register': {
+      preLoaderRoute: typeof AuthRegisterImport
+      parentRoute: typeof AuthImport
     }
-    '/(auth)/login': {
-      preLoaderRoute: typeof authLoginImport
-      parentRoute: typeof rootRoute
+    '/_home/home': {
+      preLoaderRoute: typeof HomeHomeImport
+      parentRoute: typeof HomeImport
     }
   }
 }
@@ -89,10 +119,11 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
-  IndexLazyRoute,
+  IndexRoute,
+  AdminRoute.addChildren([AdminDashboardRoute]),
+  AuthRoute.addChildren([AuthLoginRoute, AuthRegisterRoute]),
+  HomeRoute.addChildren([HomeHomeRoute]),
   AboutLazyRoute,
-  adminRoute.addChildren([adminDashboardRoute]),
-  authLoginRoute,
 ])
 
 /* prettier-ignore-end */

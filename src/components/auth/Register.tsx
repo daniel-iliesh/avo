@@ -5,10 +5,8 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
-import { jwtDecode } from 'jwt-decode'
 import axios from 'axios'
 import { Link } from '@tanstack/react-router'
-import { Link as MLink } from '@mui/material'
 
 const userSchema = z
   .object({
@@ -16,27 +14,21 @@ const userSchema = z
     password: z.string().min(8)
   })
 
-type LoginData = z.infer<typeof userSchema>
+type RegisterData = z.infer<typeof userSchema>
 
-const Login = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginData>({ resolver: zodResolver(userSchema) });
+const Register = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm<RegisterData>({ resolver: zodResolver(userSchema) });
 
-  const loginUser = (data: LoginData) => {
-    return axios.post('http://127.0.0.1:9000/auth/login/', data).then(res => res.data)
+  const registerUser = (data: RegisterData) => {
+    return axios.post('http://127.0.0.1:9000/auth/register/', data).then(res => res.data)
   }
 
-  const mutation = useMutation({ mutationKey: ['login'], mutationFn: loginUser })
+  const mutation = useMutation({ mutationKey: ['register'], mutationFn: registerUser })
 
-  const onSubmit = (data: LoginData) => {
+  const onSubmit = (data: RegisterData) => {
     mutation.mutate(data, {
-      onSuccess: (data) => {
-        localStorage.setItem("access", data.access)
-        localStorage.setItem("refresh", data.refresh)
-        
-        let userData = jwtDecode(data.access)
-        console.log(userData);
-      },
-      onError: (error) => toast.error(error?.response?.data.detail)
+      onSuccess: (data) => toast.success(data.message),
+      onError: (error: any) => toast.error(error?.response?.data.error)
     })
   }
 
@@ -47,7 +39,7 @@ const Login = () => {
           <FormGroup style={{ gap: 12 }}>
             <FormLabel style={{ textAlign: 'center' }}>
               <Typography variant='h5' fontWeight="bold">
-                Login
+                Register
               </Typography>
             </FormLabel>
             <TextField color={errors.email && 'error'} type="email" label="Email" placeholder='example@email.com' {...register("email")} helperText={errors.email?.message || " "} />
@@ -55,17 +47,17 @@ const Login = () => {
           </FormGroup>
         </CardContent>
         <CardActions style={{ justifyContent: 'center' }}>
-          <Button type='submit' variant='contained' onClick={handleSubmit(onSubmit)} >Login</Button>
+          <Button type='submit' variant='contained' onClick={handleSubmit(onSubmit)}>Register</Button>
         </CardActions>
         <div style={{display: 'flex',flexDirection: 'column', alignItems: 'center'}}>
-          <Typography variant='caption'>Don't have an account yet ?</Typography>
-          <MLink variant='caption'>
-            <Link to='/register'>Register</Link>
-          </MLink>
+          <Typography variant='caption'>Already have an account?</Typography>
+          <Typography variant='caption'>
+            <Link to='/login'>Login</Link>
+          </Typography>
         </div>
       </Card>
     </form>
   )
 }
 
-export default Login
+export default Register
