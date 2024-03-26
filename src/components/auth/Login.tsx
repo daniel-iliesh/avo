@@ -6,9 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { jwtDecode } from 'jwt-decode'
-import axios from 'axios'
 import { Link } from '@tanstack/react-router'
 import { Link as MLink } from '@mui/material'
+import Api from "../../services/ApiService"
 
 const userSchema = z
   .object({
@@ -22,10 +22,10 @@ const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginData>({ resolver: zodResolver(userSchema) });
 
   const loginUser = (data: LoginData) => {
-    return axios.post('http://127.0.0.1:9000/auth/login/', data).then(res => res.data)
+    return Api.post('http://127.0.0.1:9000/auth/login/', data).then(res => res.data)
   }
 
-  const mutation = useMutation({ mutationKey: ['login'], mutationFn: loginUser })
+  const mutation = useMutation({ mutationKey: ['auth', 'login'], mutationFn: loginUser })
 
   const onSubmit = (data: LoginData) => {
     mutation.mutate(data, {

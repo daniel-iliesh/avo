@@ -17,12 +17,13 @@ import { Route as StoreImport } from './routes/_store'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as AdminImport } from './routes/_admin'
 import { Route as IndexImport } from './routes/index'
-import { Route as StoreProductsImport } from './routes/_store/products'
 import { Route as StoreHomeImport } from './routes/_store/home'
 import { Route as StoreCollectionsImport } from './routes/_store/collections'
 import { Route as AuthRegisterImport } from './routes/_auth/register'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AdminDashboardImport } from './routes/_admin.dashboard'
+import { Route as StoreProductsIndexImport } from './routes/_store/products/index'
+import { Route as StoreProductsIdImport } from './routes/_store/products/$id'
 
 // Create Virtual Routes
 
@@ -55,11 +56,6 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const StoreProductsRoute = StoreProductsImport.update({
-  path: '/products',
-  getParentRoute: () => StoreRoute,
-} as any)
-
 const StoreHomeRoute = StoreHomeImport.update({
   path: '/home',
   getParentRoute: () => StoreRoute,
@@ -83,6 +79,16 @@ const AuthLoginRoute = AuthLoginImport.update({
 const AdminDashboardRoute = AdminDashboardImport.update({
   path: '/dashboard',
   getParentRoute: () => AdminRoute,
+} as any)
+
+const StoreProductsIndexRoute = StoreProductsIndexImport.update({
+  path: '/products/',
+  getParentRoute: () => StoreRoute,
+} as any)
+
+const StoreProductsIdRoute = StoreProductsIdImport.update({
+  path: '/products/$id',
+  getParentRoute: () => StoreRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -129,8 +135,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoreHomeImport
       parentRoute: typeof StoreImport
     }
-    '/_store/products': {
-      preLoaderRoute: typeof StoreProductsImport
+    '/_store/products/$id': {
+      preLoaderRoute: typeof StoreProductsIdImport
+      parentRoute: typeof StoreImport
+    }
+    '/_store/products/': {
+      preLoaderRoute: typeof StoreProductsIndexImport
       parentRoute: typeof StoreImport
     }
   }
@@ -145,7 +155,8 @@ export const routeTree = rootRoute.addChildren([
   StoreRoute.addChildren([
     StoreCollectionsRoute,
     StoreHomeRoute,
-    StoreProductsRoute,
+    StoreProductsIdRoute,
+    StoreProductsIndexRoute,
   ]),
   AboutLazyRoute,
 ])

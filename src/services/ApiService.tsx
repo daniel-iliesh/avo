@@ -1,68 +1,49 @@
-import axios, { AxiosRequestConfig } from "axios";
-import AuthService from "./AuthService";
+import axios from 'axios';
 
-const ROOT_API = "http://127.0.0.1:9000/"; 
+// Create an instance of axios
+const instance = axios.create({
+  baseURL: 'http://127.0.0.1:9000', // Replace with your API base URL
+});
 
-const makeRequest = async (
-    method: string,
-    resource: string,
-    params: Record<string, any> | undefined = undefined,
-    data: Record<string, any> | undefined = undefined,
-    headers: Record<string, string> | undefined = undefined
-) => {
-    let request: AxiosRequestConfig = {
-        method: method,
-        url: ROOT_API + resource
-    };
+// Function that will be called to refresh authorization
+const refreshToken = async () => {
+  const refresh_token = localStorage.getItem("refresh"); // Replace with your refresh_token
+  // Make a request to the refresh endpoint (this should return a new token)
+  if (!refresh_token) {
+    // Handle no refresh token case
+    // e.g., redirect to login page
+    throw new Error('No refresh token, please login again');
+  }
+  const response = await axios.post('http://127.0.0.1:9000/auth/login/refresh', {
+    refresh_token 
+  });
 
-    if (params) request = { ...request, params: params };
-    if (data) request = { ...request, data: data };
-    if (headers) request = { ...request, headers: headers };
-
-    try {
-        const response = await axios(request);
-        
-        return response.data;  // Return just the data
-    } catch (error: any) {
-        if (error.response.status == 403) {
-            AuthService.logout();
-        }
-        console.log(error);
-        throw error;
-    }
+  console.log("new_token", response.data);
+  
+  return response.data.token;
 };
 
-const makeAuthenticatedRequest = async (
-    method: string,
-    resource: string,
-    params: Record<string, any> | undefined = undefined,
-    data: Record<string, any> | undefined = undefined
-) => {
-    const authToken = await AuthService.getToken()
+// Add a request interceptor
+instance.interceptors.request.use(async (config) => {
+  // Add authorization header to the request
+  const access_token = localStorage.getItem("access"); // Replace with your access token 
+  config.headers.Authorization = `Bearer ${access_token}`; // Replace with your access token
 
-    if (!authToken) {
-        AuthService.logout();
-        throw new Error("Authentication token is missing.");
-    }
+  return config;
+});
 
-    return makeRequest(method, resource, params, data, {
-        Authorization: `Bearer ${authToken}`,
-        "Content-Type": "application/json"
-    });
-};
+// Add a response interceptor
+instance.interceptors.response.use(undefined, async (error) => {
+  if (error.config && error.response && error.response.status === 401) {
+    // If 401 by expired access token, we do a refresh
+    const newToken = await refreshToken();
 
-const ApiService = {
-    // Regular requests without authentication
-    get: (resource: string, params?: any, data?: any) => makeRequest("get", resource, params, data),
-    post: (resource: string, params?: any, data?: any) => makeRequest("post", resource, params, data),
-    put: (resource: string, params?: any, data?: any) => makeRequest("put", resource, params, data),
-    delete: (resource: string, params?: any, data?: any) => makeRequest("delete", resource, params, data),
+    // And retry the request
+    error.config.headers.Authorization = `Bearer ${newToken}`;
+    return instance.request(error.config);
+  }
 
-    // Authenticated requests with JWT token
-    authGet: (resource: string, params?: any, data?: any) => makeAuthenticatedRequest("get", resource, params, data),
-    authPost: (resource: string, params?: any, data?: any) => makeAuthenticatedRequest("post", resource, params, data),
-    authPut: (resource: string, params?: any, data?: any) => makeAuthenticatedRequest("put", resource, params, data),
-    authDelete: (resource: string, params?: any, data?: any) => makeAuthenticatedRequest("delete", resource, params, data),
-};
+  return Promise.reject(error);
+});
 
-export default ApiService;
+export default instance;

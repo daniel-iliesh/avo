@@ -11,7 +11,9 @@ function LayoutComponent() {
   return (
     <Box>
       <Header />
-      <Outlet />
+      <Box padding={2} width="100%">
+        <Outlet />
+      </Box>
     </Box>
   );
 }
