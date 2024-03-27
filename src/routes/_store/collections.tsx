@@ -1,10 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Typography } from "@mui/material";
+import { Collections } from "../../components/store/Collections";
 
 export const Route = createFileRoute("/_store/collections")({
-  component: LayoutComponent,
+  component: Collections,
 });
-
-function LayoutComponent() {
-  return <Typography>Collections</Typography>;
-}
