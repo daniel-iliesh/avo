@@ -23,7 +23,9 @@ import { Route as AuthRegisterImport } from './routes/_auth/register'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AdminDashboardImport } from './routes/_admin.dashboard'
 import { Route as StoreProductsIndexImport } from './routes/_store/products/index'
+import { Route as StoreCollectionsIndexImport } from './routes/_store/collections/index'
 import { Route as StoreProductsIdImport } from './routes/_store/products/$id'
+import { Route as StoreCollectionsIdImport } from './routes/_store/collections/$id'
 
 // Create Virtual Routes
 
@@ -86,9 +88,19 @@ const StoreProductsIndexRoute = StoreProductsIndexImport.update({
   getParentRoute: () => StoreRoute,
 } as any)
 
+const StoreCollectionsIndexRoute = StoreCollectionsIndexImport.update({
+  path: '/',
+  getParentRoute: () => StoreCollectionsRoute,
+} as any)
+
 const StoreProductsIdRoute = StoreProductsIdImport.update({
   path: '/products/$id',
   getParentRoute: () => StoreRoute,
+} as any)
+
+const StoreCollectionsIdRoute = StoreCollectionsIdImport.update({
+  path: '/$id',
+  getParentRoute: () => StoreCollectionsRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -135,9 +147,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoreHomeImport
       parentRoute: typeof StoreImport
     }
+    '/_store/collections/$id': {
+      preLoaderRoute: typeof StoreCollectionsIdImport
+      parentRoute: typeof StoreCollectionsImport
+    }
     '/_store/products/$id': {
       preLoaderRoute: typeof StoreProductsIdImport
       parentRoute: typeof StoreImport
+    }
+    '/_store/collections/': {
+      preLoaderRoute: typeof StoreCollectionsIndexImport
+      parentRoute: typeof StoreCollectionsImport
     }
     '/_store/products/': {
       preLoaderRoute: typeof StoreProductsIndexImport
@@ -153,7 +173,10 @@ export const routeTree = rootRoute.addChildren([
   AdminRoute.addChildren([AdminDashboardRoute]),
   AuthRoute.addChildren([AuthLoginRoute, AuthRegisterRoute]),
   StoreRoute.addChildren([
-    StoreCollectionsRoute,
+    StoreCollectionsRoute.addChildren([
+      StoreCollectionsIdRoute,
+      StoreCollectionsIndexRoute,
+    ]),
     StoreHomeRoute,
     StoreProductsIdRoute,
     StoreProductsIndexRoute,

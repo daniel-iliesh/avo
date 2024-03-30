@@ -1,7 +1,6 @@
 import React from "react";
-import { Apple, Logout, ShoppingCart, Person } from "@mui/icons-material";
+import { Apple, ShoppingCart, Person } from "@mui/icons-material";
 import {
-  Box,
   Button,
   IconButton,
   Menu,
@@ -14,18 +13,32 @@ import {
 import { useAppStore } from "../../state/main";
 import { ThemeSwitch } from "../ThemeSwitch";
 import { Link } from "@tanstack/react-router";
+import CartPopup from "./CartPopup";
 
 const Header = () => {
   const { isLoggedIn } = useAppStore();
   const theme = useTheme();
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const [profileAnchorEl, setProfileAnchorEl] = React.useState<null | HTMLElement>(null);
+  const profileMenuOpen = Boolean(profileAnchorEl);
+
+  const handleProfileClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setProfileAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+
+  const handleProfileClose = () => {
+    setProfileAnchorEl(null);
+  };
+
+  const [cartAnchorEl, setCartAnchorEl] = React.useState<null | HTMLElement>(null);
+  const cartMenuOpen = Boolean(cartAnchorEl);
+
+  const handleCartClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setCartAnchorEl(event.currentTarget);
+  };
+
+  const handleCartClose = () => {
+    setCartAnchorEl(null);
   };
 
   return (
@@ -47,26 +60,25 @@ const Header = () => {
 
         <Stack direction="row" gap={2}>
           <ThemeSwitch theme={theme} value={theme.palette.mode == "dark"} />
-          <IconButton>
+          <IconButton onClick={handleCartClick}>
             <ShoppingCart />
           </IconButton>
+          <Menu
+            anchorEl={cartAnchorEl}
+            open={cartMenuOpen}
+            onClose={handleCartClose}
+          >
+            <CartPopup />
+          </Menu>
           <IconButton
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
+            onClick={handleProfileClick}
           >
             <Person />
           </IconButton>
           <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
+            anchorEl={profileAnchorEl}
+            open={profileMenuOpen}
+            onClose={handleProfileClose}
           >
             {isLoggedIn ?
               [

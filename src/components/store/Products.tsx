@@ -9,7 +9,7 @@ const getProducts = ({ queryKey }: { queryKey: QueryKey }) => {
 };
 
 const Products = () => {
-  const { data, error, isError, isPending } = useQuery({
+  const { data, error, isError, isPending } = useQuery<Product[]>({
     queryKey: ["store", "products"],
     queryFn: getProducts,
   });
@@ -21,7 +21,7 @@ const Products = () => {
   if (!isError) {
     return (
       <Grid container spacing={1}>
-        {data.map((product: Product, index: number) => (
+        {data.map((product, index) => (
           <Grid item>
             <ProductCard key={index} product={product} />
           </Grid>

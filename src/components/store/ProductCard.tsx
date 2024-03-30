@@ -1,3 +1,4 @@
+import { Add, Favorite, ShoppingCart } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -5,6 +6,8 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  IconButton,
+  Stack,
   Typography,
 } from "@mui/material";
 
@@ -26,9 +29,10 @@ const ProductCard = ({ product }: { product: Product }) => {
         width: 300,
         minWidth: 300,
         justifyContent: "space-between",
+        height: "100%"
       }}
     >
-      <CardActionArea disableRipple href={`/products/${product.id}`}>
+      <CardActionArea sx={{ height: "100%" }} disableRipple href={`/products/${product.id}`}>
         <CardMedia
           height={200}
           component="img"
@@ -41,8 +45,14 @@ const ProductCard = ({ product }: { product: Product }) => {
           <Typography variant="body2">{product.description}</Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button variant="contained">Add to cart</Button>
+      <CardActions sx={{justifyContent: "space-between"}}>
+        <Button variant="contained">
+          <Add />
+          Add to cart
+        </Button>
+        <IconButton >
+          <Favorite />
+        </IconButton>
       </CardActions>
     </Card>
   );
