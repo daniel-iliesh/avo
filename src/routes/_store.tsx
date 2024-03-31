@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 import Header from "../components/store/Header";
 import { Box } from "@mui/material";

@@ -1,9 +1,8 @@
-import { FormControl, FormControlLabel, FormLabel, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { Route } from "../../routes/_store/collections/$id"
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import Api from "../../services/ApiService"
 import { type Collection } from "./CollectionCard";
-import { Add, Remove } from "@mui/icons-material";
 
 const getCollection = ({ queryKey }: { queryKey: QueryKey }) => {
     return Api.get(queryKey.join("/")).then(res => res.data)
@@ -27,21 +26,6 @@ const Collection = () => {
                 <Stack>
                     <Stack>
                         <Typography variant="h4">{data.title}</Typography>
-                        <Typography variant="caption">{data.description}</Typography>
-                    </Stack>
-                    <Stack>
-                        <FormControl>
-                            <OutlinedInput
-                                sx={{ width: "min-content"}}
-                                startAdornment={<IconButton><Remove /></IconButton>}
-                                endAdornment={<IconButton><Add /></IconButton>}
-                                placeholder={data.inventory}
-                                value={1}
-                            />
-                        </FormControl>
-                    </Stack>
-                    <Stack>
-
                     </Stack>
                 </Stack>
             </Stack>

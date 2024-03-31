@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export const useAppStore = create((set) => ({
+export const useAppStore: any = create((set: any) => ({
   isDarkTheme: localStorage.getItem("theme") === "dark",
   setIsDarkTheme: (v: boolean) => {
     localStorage.setItem("theme", v ? "dark" : "light");

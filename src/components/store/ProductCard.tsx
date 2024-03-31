@@ -1,4 +1,4 @@
-import { Add, Favorite, ShoppingCart } from "@mui/icons-material";
+import { Add, Favorite } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -7,7 +7,6 @@ import {
   CardContent,
   CardMedia,
   IconButton,
-  Stack,
   Typography,
 } from "@mui/material";
 

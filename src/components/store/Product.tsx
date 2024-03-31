@@ -1,4 +1,4 @@
-import { FormControl, FormControlLabel, FormLabel, IconButton, Input, InputAdornment, InputLabel, OutlinedInput, Stack, TextField, Typography } from "@mui/material";
+import { FormControl, IconButton, OutlinedInput, Stack, Typography } from "@mui/material";
 import { Route } from "../../routes/_store/products/$id"
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import Api from "../../services/ApiService"
@@ -35,7 +35,7 @@ const Product = () => {
                                 sx={{ width: "min-content"}}
                                 startAdornment={<IconButton><Remove /></IconButton>}
                                 endAdornment={<IconButton><Add /></IconButton>}
-                                placeholder={data.inventory}
+                                placeholder={data.inventory.toString()}
                                 value={1}
                             />
                         </FormControl>

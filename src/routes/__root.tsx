@@ -8,14 +8,14 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 const queryClient = new QueryClient();
 
-const avoDarkTheme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: {
-      main: "#196E47",
-    },
-  },
-});
+// const avoDarkTheme = createTheme({
+//   palette: {
+//     mode: "dark",
+//     primary: {
+//       main: "#196E47",
+//     },
+//   },
+// });
 
 const avoLightTheme = createTheme({
   palette: {

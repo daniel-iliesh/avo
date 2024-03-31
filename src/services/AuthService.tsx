@@ -13,7 +13,7 @@ export interface LoginData {
 export const AuthService = {
   register: async (registrationData: RegistrationData) => {
     try {
-      const response = await ApiService.post('/auth/register', undefined, registrationData);
+      const response = await ApiService.post('/auth/register', { data: registrationData });
       return response.data; // You might want to adjust this based on your API response
     } catch (error) {
       throw error;
@@ -22,8 +22,8 @@ export const AuthService = {
 
   login: async (loginData: LoginData) => {
     try {
-      const response = await ApiService.post('/auth/login', undefined, loginData);
-      const {access, refresh } = response.data; // Adjust based on your API response structure
+      const response = await ApiService.post('/auth/login', { data: loginData });
+      const { access, refresh } = response.data; // Adjust based on your API response structure
 
       localStorage.set("access", access);
       localStorage.set("refresh", refresh);

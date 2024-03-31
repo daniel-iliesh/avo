@@ -1,8 +1,7 @@
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import Api from "../../services/ApiService";
 import ProductCard, { Product } from "./ProductCard";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Grid, Stack } from "@mui/material";
+import { Grid } from "@mui/material";
 
 const getProducts = ({ queryKey }: { queryKey: QueryKey }) => {
   return Api.get(queryKey.join("/")).then((res) => res.data);
