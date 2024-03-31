@@ -1,0 +1,10 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+       - npm install -g yarn && yarn && yarn build
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'dist'
