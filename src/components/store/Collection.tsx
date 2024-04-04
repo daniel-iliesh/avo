@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import { Route } from "../../routes/_store/collections/$id"
+import { Route } from "../../routes/_index/collections/$id"
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import Api from "../../services/ApiService"
 import { type Collection } from "./CollectionCard";

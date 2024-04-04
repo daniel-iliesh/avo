@@ -1,7 +1,9 @@
 
 const CartPopup = () => {
   return (
-    <>CartPopup</>
+    <>
+      Hello world!
+    </>
   )
 }
 

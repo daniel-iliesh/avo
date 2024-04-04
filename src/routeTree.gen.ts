@@ -14,18 +14,17 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as StoreImport } from './routes/_store'
+import { Route as IndexImport } from './routes/_index'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as AdminImport } from './routes/_admin'
-import { Route as IndexImport } from './routes/index'
-import { Route as StoreHomeImport } from './routes/_store/home'
-import { Route as StoreCollectionsImport } from './routes/_store/collections'
+import { Route as IndexIndexImport } from './routes/_index/index'
 import { Route as AuthRegisterImport } from './routes/_auth/register'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as AdminDashboardImport } from './routes/_admin.dashboard'
-import { Route as StoreProductsIndexImport } from './routes/_store/products/index'
-import { Route as StoreCollectionsIndexImport } from './routes/_store/collections/index'
-import { Route as StoreProductsIdImport } from './routes/_store/products/$id'
-import { Route as StoreCollectionsIdImport } from './routes/_store/collections/$id'
+import { Route as IndexProductsIndexImport } from './routes/_index/products/index'
+import { Route as IndexCollectionsIndexImport } from './routes/_index/collections/index'
+import { Route as IndexProductsIdImport } from './routes/_index/products/$id'
+import { Route as IndexCollectionsIdImport } from './routes/_index/collections/$id'
 
 // Create Virtual Routes
 
@@ -43,6 +42,11 @@ const StoreRoute = StoreImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const IndexRoute = IndexImport.update({
+  id: '/_index',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AuthRoute = AuthImport.update({
   id: '/_auth',
   getParentRoute: () => rootRoute,
@@ -53,19 +57,9 @@ const AdminRoute = AdminImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
+const IndexIndexRoute = IndexIndexImport.update({
   path: '/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const StoreHomeRoute = StoreHomeImport.update({
-  path: '/home',
-  getParentRoute: () => StoreRoute,
-} as any)
-
-const StoreCollectionsRoute = StoreCollectionsImport.update({
-  path: '/collections',
-  getParentRoute: () => StoreRoute,
+  getParentRoute: () => IndexRoute,
 } as any)
 
 const AuthRegisterRoute = AuthRegisterImport.update({
@@ -83,40 +77,40 @@ const AdminDashboardRoute = AdminDashboardImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 
-const StoreProductsIndexRoute = StoreProductsIndexImport.update({
+const IndexProductsIndexRoute = IndexProductsIndexImport.update({
   path: '/products/',
-  getParentRoute: () => StoreRoute,
+  getParentRoute: () => IndexRoute,
 } as any)
 
-const StoreCollectionsIndexRoute = StoreCollectionsIndexImport.update({
-  path: '/',
-  getParentRoute: () => StoreCollectionsRoute,
+const IndexCollectionsIndexRoute = IndexCollectionsIndexImport.update({
+  path: '/collections/',
+  getParentRoute: () => IndexRoute,
 } as any)
 
-const StoreProductsIdRoute = StoreProductsIdImport.update({
+const IndexProductsIdRoute = IndexProductsIdImport.update({
   path: '/products/$id',
-  getParentRoute: () => StoreRoute,
+  getParentRoute: () => IndexRoute,
 } as any)
 
-const StoreCollectionsIdRoute = StoreCollectionsIdImport.update({
-  path: '/$id',
-  getParentRoute: () => StoreCollectionsRoute,
+const IndexCollectionsIdRoute = IndexCollectionsIdImport.update({
+  path: '/collections/$id',
+  getParentRoute: () => IndexRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
     '/_admin': {
       preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
     '/_auth': {
       preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/_index': {
+      preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/_store': {
@@ -139,29 +133,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRegisterImport
       parentRoute: typeof AuthImport
     }
-    '/_store/collections': {
-      preLoaderRoute: typeof StoreCollectionsImport
-      parentRoute: typeof StoreImport
+    '/_index/': {
+      preLoaderRoute: typeof IndexIndexImport
+      parentRoute: typeof IndexImport
     }
-    '/_store/home': {
-      preLoaderRoute: typeof StoreHomeImport
-      parentRoute: typeof StoreImport
+    '/_index/collections/$id': {
+      preLoaderRoute: typeof IndexCollectionsIdImport
+      parentRoute: typeof IndexImport
     }
-    '/_store/collections/$id': {
-      preLoaderRoute: typeof StoreCollectionsIdImport
-      parentRoute: typeof StoreCollectionsImport
+    '/_index/products/$id': {
+      preLoaderRoute: typeof IndexProductsIdImport
+      parentRoute: typeof IndexImport
     }
-    '/_store/products/$id': {
-      preLoaderRoute: typeof StoreProductsIdImport
-      parentRoute: typeof StoreImport
+    '/_index/collections/': {
+      preLoaderRoute: typeof IndexCollectionsIndexImport
+      parentRoute: typeof IndexImport
     }
-    '/_store/collections/': {
-      preLoaderRoute: typeof StoreCollectionsIndexImport
-      parentRoute: typeof StoreCollectionsImport
-    }
-    '/_store/products/': {
-      preLoaderRoute: typeof StoreProductsIndexImport
-      parentRoute: typeof StoreImport
+    '/_index/products/': {
+      preLoaderRoute: typeof IndexProductsIndexImport
+      parentRoute: typeof IndexImport
     }
   }
 }
@@ -169,17 +159,14 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren([
-  IndexRoute,
   AdminRoute.addChildren([AdminDashboardRoute]),
   AuthRoute.addChildren([AuthLoginRoute, AuthRegisterRoute]),
-  StoreRoute.addChildren([
-    StoreCollectionsRoute.addChildren([
-      StoreCollectionsIdRoute,
-      StoreCollectionsIndexRoute,
-    ]),
-    StoreHomeRoute,
-    StoreProductsIdRoute,
-    StoreProductsIndexRoute,
+  IndexRoute.addChildren([
+    IndexIndexRoute,
+    IndexCollectionsIdRoute,
+    IndexProductsIdRoute,
+    IndexCollectionsIndexRoute,
+    IndexProductsIndexRoute,
   ]),
   AboutLazyRoute,
 ])

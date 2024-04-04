@@ -1,5 +1,5 @@
 import { FormControl, IconButton, OutlinedInput, Stack, Typography } from "@mui/material";
-import { Route } from "../../routes/_store/products/$id"
+import { Route } from "../../routes/_index/products/$id"
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import Api from "../../services/ApiService"
 import { type Product } from "./ProductCard";

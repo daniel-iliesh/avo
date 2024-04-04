@@ -1,18 +1,21 @@
 import React from "react";
-import { Apple, ShoppingCart, Person } from "@mui/icons-material";
+import { ShoppingCart, Person, Search } from "@mui/icons-material";
 import {
   Button,
+  FormControl,
   IconButton,
+  InputAdornment,
   Menu,
   MenuItem,
+  OutlinedInput,
   Paper,
   Stack,
   Typography,
   useTheme,
+  Link
 } from "@mui/material";
 import { useAppStore } from "../../state/main";
 import { ThemeSwitch } from "../ThemeSwitch";
-import { Link } from "@tanstack/react-router";
 import CartPopup from "./CartPopup";
 
 const Header = () => {
@@ -42,14 +45,18 @@ const Header = () => {
   };
 
   return (
-    <Paper square sx={{height: 70, alignContent: "center", padding: 2}}>
+    <Paper square sx={{ height: 70, alignContent: "center", padding: 2 }}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Stack direction="row" alignItems="center" gap={1}>
-          <Apple />
-          <Typography variant="h6">Avo Shop</Typography>
+          <img style={{ width: 40 }} src="/favicon.svg" />
+          <Typography variant="h6">
+            <Link href="/" sx={{textDecoration: "none"}} >
+              Avo Shop
+            </Link>
+          </Typography>
         </Stack>
 
-        <Stack direction="row">
+        <Stack direction="row" >
           <Button href="/collections" variant="text">
             Collections
           </Button>
@@ -58,7 +65,18 @@ const Header = () => {
           </Button>
         </Stack>
 
-        <Stack direction="row" gap={2}>
+        <Stack direction="row" gap={2} alignItems="center">
+          <FormControl variant="standard">
+            <OutlinedInput
+              sx={{ height: 40, width: 200 }}
+              placeholder="Search..."
+              startAdornment={
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              }
+            />
+          </FormControl>
           <ThemeSwitch theme={theme} value={theme.palette.mode == "dark"} />
           <IconButton onClick={handleCartClick}>
             <ShoppingCart />
