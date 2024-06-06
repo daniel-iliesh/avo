@@ -5,7 +5,9 @@
 -->
 
 <div style="display: flex; justify-content: center;">
-  <img src="favimage.png" alt="Fav Image" style="width: 200px; height: auto;">
+  <a target="_blank" rel="noopener noreferrer" href="/daniel-iliesh/avo/blob/main/favimage.png">
+    <img src="/daniel-iliesh/avo/raw/main/favimage.png" alt="Fav Image" style="width: 200px; max-width: 100%;">
+  </a>
 </div>
 
 # React + TypeScript + Vite
