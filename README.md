@@ -4,7 +4,7 @@
 }
 -->
 
-<div style="text-align: center;">
+<div style="display: flex;place-items: center">
   <img src="favimage.png" alt="Fav Image" style="width: 200px; height: auto;">
 </div>
 
