@@ -4,9 +4,9 @@
 }
 -->
 
-<div style="display: flex; justify-content: center;">
+<p align="center">
     <img src="favimage.png" alt="Fav Image" style="width: 200px; max-width: 100%;">
-</div>
+</p>
 
 # React + TypeScript + Vite
 
