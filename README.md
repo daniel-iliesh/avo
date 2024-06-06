@@ -4,7 +4,9 @@
 }
 -->
 
-![](favimage.png)
+<div style="text-align: center;">
+  <img src="favimage.png" alt="Fav Image" style="width: 200px; height: auto;">
+</div>
 
 # React + TypeScript + Vite
 
