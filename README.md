@@ -4,7 +4,7 @@
 }
 -->
 
-<div style="display: flex;justify-content: center;align-content: center">
+<div style="display: flex;justify-content: center;align-content: center;">
   <img src="favimage.png" alt="Fav Image" style="height: auto;">
 </div>
 
