@@ -4,10 +4,6 @@
 }
 -->
 
-<p align="center">
-    <img src="favimage.png" alt="Fav Image" style="width: 200px" >
-</p>
-
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
