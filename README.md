@@ -5,7 +5,7 @@
 -->
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/daniel-iliesh/avo/main/favimage.png" alt="Favimage">
+  <img src="https://raw.githubusercontent.com/daniel-iliesh/avo/main/favimage.png" max-widht="200px" alt="Favimage">
 </p>
 
 # React + TypeScript + Vite
