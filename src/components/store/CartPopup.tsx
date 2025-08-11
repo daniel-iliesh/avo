@@ -1,30 +1,24 @@
-import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Stack, Typography } from "@mui/material"
-import { Product } from "./ProductCard"
-import { Delete } from "@mui/icons-material"
+import { IconButton, List, Stack, Typography } from "@mui/material";
+import { Product } from "./ProductCard";
+import CartItem from "./CartItem";
+import { DeleteSweep } from "@mui/icons-material";
 
 const CartPopup = ({ item }: { item: Product }) => {
   return (
     <Stack>
+      <Stack direction="row" justifyContent="space-between" marginX={3}>
+        <Typography variant="h5">My Cart</Typography>
+        <IconButton>
+          <DeleteSweep />
+        </IconButton>
+      </Stack>
       <List>
-        <ListItem sx={{ width: 300 }} alignItems="center">
-          <ListItemAvatar>
-            <Avatar src={`https://picsum.photos/50`} />
-          </ListItemAvatar>
-          <ListItemText
-            primary="Product here"
-            secondary={
-              <Typography variant="caption">
-                12 x 3
-              </Typography>
-            }
-          />
-          <ListItemButton>
-            <Delete />
-          </ListItemButton>
-        </ListItem>
+        <CartItem />
+        <CartItem />
+        <CartItem />
       </List>
     </Stack>
-  )
-}
+  );
+};
 
-export default CartPopup
+export default CartPopup;

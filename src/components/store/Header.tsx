@@ -12,7 +12,7 @@ import {
   Stack,
   Typography,
   useTheme,
-  Link
+  Link,
 } from "@mui/material";
 import { useAppStore } from "../../state/main";
 import { ThemeSwitch } from "../ThemeSwitch";
@@ -22,7 +22,8 @@ const Header = () => {
   const { isLoggedIn } = useAppStore();
   const theme = useTheme();
 
-  const [profileAnchorEl, setProfileAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [profileAnchorEl, setProfileAnchorEl] =
+    React.useState<null | HTMLElement>(null);
   const profileMenuOpen = Boolean(profileAnchorEl);
 
   const handleProfileClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -33,7 +34,9 @@ const Header = () => {
     setProfileAnchorEl(null);
   };
 
-  const [cartAnchorEl, setCartAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [cartAnchorEl, setCartAnchorEl] = React.useState<null | HTMLElement>(
+    null,
+  );
   const cartMenuOpen = Boolean(cartAnchorEl);
 
   const handleCartClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -50,13 +53,13 @@ const Header = () => {
         <Stack direction="row" alignItems="center" gap={1}>
           <img style={{ width: 40 }} src="/favicon.svg" />
           <Typography variant="h6">
-            <Link href="/" sx={{textDecoration: "none"}} >
+            <Link href="/" sx={{ textDecoration: "none" }}>
               Avo Shop
             </Link>
           </Typography>
         </Stack>
 
-        <Stack direction="row" >
+        <Stack direction="row">
           <Button href="/collections" variant="text">
             Collections
           </Button>
@@ -88,9 +91,7 @@ const Header = () => {
           >
             <CartPopup />
           </Menu>
-          <IconButton
-            onClick={handleProfileClick}
-          >
+          <IconButton onClick={handleProfileClick}>
             <Person />
           </IconButton>
           <Menu
@@ -98,17 +99,16 @@ const Header = () => {
             open={profileMenuOpen}
             onClose={handleProfileClose}
           >
-            {isLoggedIn ?
-              [
-                <MenuItem>Profile</MenuItem>,
-                <MenuItem>My account</MenuItem>,
-                <MenuItem>Logout</MenuItem>
-              ] :
-              [
-                <MenuItem component={Link} to="/login">Login</MenuItem>,
-                <MenuItem component={Link} to="/register">Register</MenuItem>,
-              ]
-            }
+            {isLoggedIn
+              ? [
+                  <MenuItem>Profile</MenuItem>,
+                  <MenuItem>My account</MenuItem>,
+                  <MenuItem>Logout</MenuItem>,
+                ]
+              : [
+                  <MenuItem href="/login">Login</MenuItem>,
+                  <MenuItem href="/register">Register</MenuItem>,
+                ]}
           </Menu>
         </Stack>
       </Stack>
